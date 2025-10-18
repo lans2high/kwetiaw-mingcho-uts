@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kelola Pesanan - Kwetiaw Mingcho</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer>
+    async function loadMenu() {
+      const res = await fetch('/menu/list');
+      const data = await res.json();
+      const select = document.getElementById('menu-select');
+      select.innerHTML = data.map(m => `<option value="${m.id}">${m.nama} - Rp ${m.harga}</option>`).join('');
+    }
+
+    async function addOrder(e) {
+      e.preventDefault();
+      const formData = new URLSearchParams(new FormData(e.target));
+      const res = await fetch('/orders/add', { method: 'POST', body: formData });
+      const msg = await res.text();
+      document.getElementById('order-message').innerText = msg;
+      e.target.reset();
+    }
+
+    window.addEventListener('DOMContentLoaded', loadMenu);
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="/admin/main.html">Dashboard</a>
+    <a href="/admin/master-menu.html">Kelola Menu</a>
+    <a href="/admin/orders-admin.html">Kelola Pesanan</a>
+    <a href="/admin/report.html">Laporan</a>
+    <a href="/auth/logout">Logout</a>
+  </nav>
+
+  <header>
+    <h1>Kelola Pesanan 🧾</h1>
+  </header>
+
+  <section>
+    <form onsubmit="addOrder(event)">
+      <label>Nama Customer</label>
+      <input type="text" name="customer_name" required>
+
+      <label>Pilih Menu</label>
+      <select id="menu-select" name="menu_id"></select>
+
+      <label>Jumlah</label>
+      <input type="number" name="qty" min="1" required>
+
+      <button type="submit">Tambah Pesanan</button>
+    </form>
+    <p id="order-message"></p>
+  </section>
+</body>
+</html>

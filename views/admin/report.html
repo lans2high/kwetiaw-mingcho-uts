@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Laporan - Kwetiaw Mingcho</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer>
+    async function loadReport(url = '/report') {
+      const res = await fetch(url);
+      const data = await res.json();
+      const tbody = document.querySelector('tbody');
+      tbody.innerHTML = data.map((row, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${row.customer_name}</td>
+          <td>${row.menu}</td>
+          <td>${row.qty}</td>
+          <td>Rp ${row.total.toLocaleString()}</td>
+          <td>${new Date(row.order_date).toLocaleString()}</td>
+        </tr>
+      `).join('');
+    }
+
+    function filterReport(e) {
+      e.preventDefault();
+      const start = e.target.start.value;
+      const end = e.target.end.value;
+      loadReport(`/report/filter?start=${start}&end=${end}`);
+    }
+
+    function printReport() {
+      window.print();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => loadReport());
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="/admin/main.html">Dashboard</a>
+    <a href="/admin/master-menu.html">Kelola Menu</a>
+    <a href="/admin/orders-admin.html">Kelola Pesanan</a>
+    <a href="/admin/report.html">Laporan</a>
+    <a href="/auth/logout">Logout</a>
+  </nav>
+
+  <header>
+    <h1>Laporan Penjualan 📊</h1>
+  </header>
+
+  <section>
+    <form onsubmit="filterReport(event)">
+      <label>Mulai</label>
+      <input type="date" name="start" required>
+
+      <label>Sampai</label>
+      <input type="date" name="end" required>
+
+      <button type="submit">Filter</button>
+      <button type="button" onclick="printReport()">Print</button>
+    </form>
+
+    <table border="1" cellpadding="6">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Customer</th>
+          <th>Menu</th>
+          <th>Qty</th>
+          <th>Total</th>
+          <th>Tanggal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data laporan tampil disini -->
+      </tbody>
+    </table>
+  </section>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kelola Menu - Kwetiaw Mingcho</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer>
+    // Tampilkan semua menu
+    async function loadMenu() {
+      const res = await fetch('/menu/list');
+      const data = await res.json();
+      const tbody = document.querySelector('tbody');
+      tbody.innerHTML = data.map(item => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.nama}</td>
+          <td>${item.kategori}</td>
+          <td>Rp ${item.harga.toLocaleString()}</td>
+          <td>
+            <button onclick="editMenu(${item.id}, '${item.nama}', ${item.harga}, '${item.kategori}')">Edit</button>
+            <button onclick="deleteMenu(${item.id})">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function addMenu(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new URLSearchParams(new FormData(form));
+      await fetch('/menu/add', { method: 'POST', body: formData });
+      form.reset();
+      loadMenu();
+    }
+
+    async function editMenu(id, nama, harga, kategori) {
+      const newName = prompt('Nama menu:', nama);
+      const newHarga = prompt('Harga menu:', harga);
+      const newKategori = prompt('Kategori (Makanan/Minuman):', kategori);
+
+      if (newName && newHarga && newKategori) {
+        await fetch(`/menu/update/${id}`, {
+          method: 'POST',
+          body: new URLSearchParams({ nama: newName, harga: newHarga, kategori: newKategori })
+        });
+        loadMenu();
+      }
+    }
+
+    async function deleteMenu(id) {
+      if (confirm('Yakin ingin menghapus menu ini?')) {
+        await fetch(`/menu/delete/${id}`);
+        loadMenu();
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', loadMenu);
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="/admin/main.html">Dashboard</a>
+    <a href="/admin/master-menu.html">Kelola Menu</a>
+    <a href="/admin/orders-admin.html">Kelola Pesanan</a>
+    <a href="/admin/report.html">Laporan</a>
+    <a href="/auth/logout">Logout</a>
+  </nav>
+
+  <header>
+    <h1>Kelola Menu 🍽️</h1>
+  </header>
+
+  <section>
+    <form onsubmit="addMenu(event)">
+      <input type="text" name="nama" placeholder="Nama Menu" required>
+      <input type="number" name="harga" placeholder="Harga" required>
+      <select name="kategori" required>
+        <option value="Makanan">Makanan</option>
+        <option value="Minuman">Minuman</option>
+      </select>
+      <button type="submit">Tambah Menu</button>
+    </form>
+
+    <table border="1" cellpadding="6">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama</th>
+          <th>Kategori</th>
+          <th>Harga</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data menu tampil di sini -->
+      </tbody>
+    </table>
+  </section>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pesan Menu - Kwetiaw Mingcho</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/menu.html">Menu</a>
+    <a href="/order.html">Pesan</a>
+    <a href="/about.html">Tentang</a>
+    <a href="/contact.html">Kontak</a>
+  </nav>
+
+  <header>
+    <h1>Form Pemesanan 🧾</h1>
+  </header>
+
+  <section>
+    <form id="order-form">
+      <label>Nama Customer</label>
+      <input type="text" name="customer_name" required>
+
+      <label>Menu</label>
+      <select name="menu_id" id="menu-select"></select>
+
+      <label>Jumlah</label>
+      <input type="number" name="qty" min="1" required>
+
+      <button type="submit">Pesan Sekarang</button>
+    </form>
+
+    <p id="order-message"></p>
+  </section>
+
+  <script>
+    // Ambil daftar menu untuk dropdown
+    fetch('/menu/list')
+      .then(res => res.json())
+      .then(data => {
+        const select = document.getElementById('menu-select');
+        select.innerHTML = data.map(item =>
+          `<option value="${item.id}">${item.nama} - Rp ${item.harga}</option>`
+        ).join('');
+      });
+
+    // Submit pesanan
+    document.getElementById('order-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch('/orders/add', {
+        method: 'POST',
+        body: new URLSearchParams(formData)
+      });
+      const text = await res.text();
+      document.getElementById('order-message').innerText = text;
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>

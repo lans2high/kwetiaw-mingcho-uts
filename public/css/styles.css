@@ -1,0 +1,91 @@
+/* === GLOBAL RESET === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background-color: #f8f8f8;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  /* === NAVBAR === */
+  nav {
+    background-color: #b33f00;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+  }
+  
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
+    color: #ffd699;
+  }
+  
+  /* === HEADER SECTION === */
+  header {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(to right, #b33f00, #ff6600);
+    color: #fff;
+  }
+  
+  header h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  
+  header p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+  }
+  
+  header .cta {
+    background-color: #fff;
+    color: #b33f00;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  
+  header .cta:hover {
+    background-color: #ffe6cc;
+  }
+  
+  /* === SECTION CONTENT === */
+  section {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  /* === TABLES === */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  table th, table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  

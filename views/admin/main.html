@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Kwetiaw Mingcho</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="/admin/main.html">Dashboard</a>
+    <a href="/admin/master-menu.html">Kelola Menu</a>
+    <a href="/admin/orders-admin.html">Kelola Pesanan</a>
+    <a href="/admin/report.html">Laporan</a>
+    <a href="/auth/logout" class="logout">Logout</a>
+  </nav>
+
+  <header>
+    <h1>Dashboard Admin 🍜</h1>
+  </header>
+
+  <section>
+    <p>Selamat datang di sistem administrasi <strong>Kwetiaw Jambi Mingcho</strong>!</p>
+    <p>Gunakan menu navigasi di atas untuk mengelola data.</p>
+  </section>
+  <section>
+    <h2>Tambah Admin Baru</h2>
+    <form id="register-admin">
+      <input type="text" name="username" placeholder="Username Baru" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Tambah Admin</button>
+    </form>
+    <p id="register-message"></p>
+  </section>
+  
+  <script>
+  document.getElementById('register-admin').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new URLSearchParams(new FormData(e.target));
+    const res = await fetch('/auth/register', {
+      method: 'POST',
+      body: formData
+    });
+    document.getElementById('register-message').innerText = await res.text();
+    e.target.reset();
+  });
+  </script>
+  
+  <footer>
+    <p>© 2025 Kwetiaw Jambi Mingcho</p>
+  </footer>
+</body>
+</html>
